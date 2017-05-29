@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+    <Description>Serilog sink that writes to Scalyr</Description>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>Tiny Blue Robots</Authors>
+    <TargetFrameworks>netstandard1.3</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Serilog.Sinks.Scalyr</AssemblyName>
+    <PackageId>Serilog.Sinks.Scalyr</PackageId>
+    <PackageTags>serilog;scalyr</PackageTags>
+    <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
+    <PackageProjectUrl>http://serilog.net</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/TinyBlueRobots/Serilog.Sinks.Scalyr</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+</Project>
