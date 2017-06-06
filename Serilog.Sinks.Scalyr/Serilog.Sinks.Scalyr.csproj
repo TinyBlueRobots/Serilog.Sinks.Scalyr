@@ -3,7 +3,7 @@
     <Description>Serilog sink that writes to Scalyr</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Tiny Blue Robots</Authors>
-    <TargetFrameworks>netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Serilog.Sinks.Scalyr</AssemblyName>
     <PackageId>Serilog.Sinks.Scalyr</PackageId>
@@ -19,5 +19,9 @@
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <PackageReference Include="System.Net.Http" Version="4.3.2" />
   </ItemGroup>
 </Project>
