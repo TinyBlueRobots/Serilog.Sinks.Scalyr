@@ -1,0 +1,6 @@
+Expecto
+FSharp.Core
+FSharp.NET.Sdk
+Microsoft.AspNetCore
+Newtonsoft.Json
+Serilog

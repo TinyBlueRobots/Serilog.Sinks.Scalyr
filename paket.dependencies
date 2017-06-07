@@ -1,0 +1,14 @@
+source https://dotnet.myget.org/F/dotnet-core/api/v3/index.json
+source https://dotnet.myget.org/F/cli-deps/api/v3/index.json
+source https://www.myget.org/F/aspnetvnext/api/v2/
+source https://www.nuget.org/api/v2/
+source https://www.myget.org/F/xunit/
+
+nuget Expecto prerelease
+nuget FSharp.Core
+nuget FSharp.NET.Sdk
+nuget Microsoft.AspNetCore
+nuget Newtonsoft.Json
+nuget Serilog
+nuget Serilog.Sinks.PeriodicBatching
+nuget System.Net.Http

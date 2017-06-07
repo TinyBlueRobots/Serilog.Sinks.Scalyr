@@ -1,0 +1,3 @@
+Serilog.Sinks.PeriodicBatching
+Newtonsoft.Json
+System.Net.Http

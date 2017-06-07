@@ -13,7 +13,7 @@ namespace Serilog
     /// Adds a sink that writes log events to <a href="https://scalyr.com">Scalyr</a>.
     /// </summary>
     /// <param name="loggerSinkConfiguration">The logger configuration.</param>
-    /// <param name="token">Should be a "Write Logs" API token. Find API tokens at <a href="https://www.scalyr.com/keys"></a></param>
+    /// <param name="token">"Write Logs" API token. Find API tokens at https://www.scalyr.com/keys.</param>
     /// <param name="serverHost">Hostname or some other stable server identifier. Scalyr uses this value to organize events from different servers.</param>
     /// <param name="logfile">The name of the log file being written to.</param>
     /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
