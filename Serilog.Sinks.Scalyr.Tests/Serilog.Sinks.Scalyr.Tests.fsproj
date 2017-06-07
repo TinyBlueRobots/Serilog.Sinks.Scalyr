@@ -5,7 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="TestApi.fs" />
-    <Compile Include="*.fs" />
+    <Compile Include="Tests.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../Serilog.Sinks.Scalyr/Serilog.Sinks.Scalyr.csproj" />
