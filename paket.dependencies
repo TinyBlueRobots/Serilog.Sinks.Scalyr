@@ -1,6 +1,6 @@
 source https://api.nuget.org/v3/index.json
 
-nuget Expecto prerelease
+nuget Expecto
 nuget FSharp.Core
 nuget FSharp.NET.Sdk
 nuget Microsoft.AspNetCore
