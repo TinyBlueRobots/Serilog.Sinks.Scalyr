@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="TestApi.fs" />
     <Compile Include="Tests.fs" />
+    <Compile Include="JsonFormatTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

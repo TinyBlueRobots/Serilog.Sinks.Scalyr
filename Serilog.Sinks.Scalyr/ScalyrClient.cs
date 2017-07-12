@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Threading;
+using Serilog.Formatting.Json;
+using System.IO;
 
 namespace Serilog.Sinks.Scalyr
 {
@@ -30,7 +32,7 @@ namespace Serilog.Sinks.Scalyr
     {
         readonly ScalyrSession _session;
         readonly JsonSerializerSettings _jsonSerializerSettings;
-
+        readonly JsonValueFormatter formatter = new JsonValueFormatter(null);
         long lastTimeStamp;
 
         public ScalyrClient(string token, string serverHost, string logfile, object sessionInfo, Uri scalyrUri)
@@ -50,9 +52,11 @@ namespace Serilog.Sinks.Scalyr
         ScalyrEvent MapToScalyrEvent(LogEvent logEvent, int index)
         {
             var attrs = new JObject();
-            foreach (var p in logEvent.Properties)
+            foreach (var property in logEvent.Properties)
             {
-                attrs.Add(p.Key, JToken.Parse(p.Value.ToString()));
+                var json = new StringWriter();
+                formatter.Format(property.Value, json);
+                attrs.Add(property.Key, JToken.Parse(json.ToString()));
             }
             attrs.Add("message", logEvent.RenderMessage());
             var ts = logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index;
