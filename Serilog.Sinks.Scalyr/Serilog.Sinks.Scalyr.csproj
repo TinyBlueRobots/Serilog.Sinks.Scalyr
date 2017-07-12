@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Serilog sink that writes to Scalyr</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
@@ -19,5 +19,9 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System" />
   </ItemGroup>
-  <Import Project="..\.paket\Paket.Restore.targets" />
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="*" />
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="*" />
+    <PackageReference Include="System.Net.Http" Version="*" />
+  </ItemGroup>
 </Project>
