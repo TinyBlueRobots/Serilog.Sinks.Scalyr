@@ -11,12 +11,6 @@ type SessionInfo = { location : string }
 [<Tests>]
 let tests =
 
-  let getValue name (jObject : JObject) = jObject.[name].Value<string>()
-
-  let getFirstEvent (jObject : JObject) = jObject.["events"].Value<JArray>().[0].ToObject()
-
-  let getAttrs (jObject : JObject) = jObject.["attrs"].ToObject()
-
   let isGuid value = Regex.IsMatch(value, "[a-f0-9]{32}")
 
   let startTs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000000L

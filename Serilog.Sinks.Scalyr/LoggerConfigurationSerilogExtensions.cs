@@ -1,5 +1,6 @@
 ﻿using System;
 using Serilog.Configuration;
+using Serilog.Formatting.Display;
 using Serilog.Sinks.Scalyr;
 
 namespace Serilog
@@ -21,9 +22,11 @@ namespace Serilog
     /// <param name="queueLimit">Maximum number of events in the queue.</param>
     /// <param name="sessionInfo">Additional information about the session.</param>
     /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
-    public static LoggerConfiguration Scalyr(this LoggerSinkConfiguration loggerSinkConfiguration, string token, string serverHost, string logfile, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, object sessionInfo = null, Uri scalyrUri = null)
+    /// <param name="outputTemplate">A message template describing the output messages.</param>
+    public static LoggerConfiguration Scalyr(this LoggerSinkConfiguration loggerSinkConfiguration, string token, string serverHost, string logfile, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, object sessionInfo = null, Uri scalyrUri = null, string outputTemplate = null)
         {
-            var client = new ScalyrClient(token, serverHost, logfile, sessionInfo, scalyrUri);
+            var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
+            var client = new ScalyrClient(token, serverHost, logfile, sessionInfo, scalyrUri, messageTemplateTextFormatter);
             var sink =
                 queueLimit.HasValue ?
                 new ScalyrSink(client, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value) :

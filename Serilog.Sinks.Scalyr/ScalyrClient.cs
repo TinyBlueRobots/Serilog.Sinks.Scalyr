@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using System.Threading;
 using Serilog.Formatting.Json;
 using System.IO;
+using Serilog.Formatting.Display;
 
 namespace Serilog.Sinks.Scalyr
 {
@@ -33,9 +34,10 @@ namespace Serilog.Sinks.Scalyr
         readonly ScalyrSession _session;
         readonly JsonSerializerSettings _jsonSerializerSettings;
         readonly JsonValueFormatter formatter = new JsonValueFormatter(null);
+        readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
         long lastTimeStamp;
 
-        public ScalyrClient(string token, string serverHost, string logfile, object sessionInfo, Uri scalyrUri)
+        public ScalyrClient(string token, string serverHost, string logfile, object sessionInfo, Uri scalyrUri, MessageTemplateTextFormatter messageTemplateTextFormatter)
         {
             _jsonSerializerSettings = new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore,
@@ -43,6 +45,7 @@ namespace Serilog.Sinks.Scalyr
                     NamingStrategy = new CamelCaseNamingStrategy()
                 }
             };
+            _messageTemplateTextFormatter = messageTemplateTextFormatter;
             _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N"), SessionInfo = JObject.FromObject(sessionInfo ?? new object()) };
             _session.SessionInfo.Add("serverHost", serverHost);
             _session.SessionInfo.Add("logfile", logfile);
@@ -58,7 +61,18 @@ namespace Serilog.Sinks.Scalyr
                 formatter.Format(property.Value, json);
                 attrs.Add(property.Key, JToken.Parse(json.ToString()));
             }
-            attrs.Add("message", logEvent.RenderMessage());
+            using (var stringWriter = new StringWriter())
+            {
+                if (_messageTemplateTextFormatter != null)
+                {
+                    _messageTemplateTextFormatter.Format(logEvent, stringWriter);
+                }
+                else
+                {
+                    stringWriter.Write(logEvent.RenderMessage());
+                }
+                attrs.Add("message", stringWriter.ToString());
+            }
             var ts = logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index;
             while (ts <= lastTimeStamp) {ts++;}
             lastTimeStamp = ts;

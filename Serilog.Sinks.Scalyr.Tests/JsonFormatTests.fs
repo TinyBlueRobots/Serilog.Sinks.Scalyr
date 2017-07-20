@@ -10,12 +10,6 @@ type Test = { Foo : string }
 [<Tests>]
 let tests =
 
-  let getObject name (jObject : JObject) = jObject.[name]
-
-  let getFirstEvent (jObject : JObject) = jObject.["events"].Value<JArray>().[0].ToObject()
-
-  let getAttrs (jObject : JObject) = jObject.["attrs"].ToObject()
-
   use testApi = new TestApi()
 
   let uri = testApi.Start()
