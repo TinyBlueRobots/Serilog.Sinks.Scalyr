@@ -33,7 +33,7 @@ namespace Serilog.Sinks.Scalyr
     {
         readonly ScalyrSession _session;
         readonly JsonSerializerSettings _jsonSerializerSettings;
-        readonly JsonValueFormatter formatter = new JsonValueFormatter(null);
+        readonly JsonValueFormatter jsonValueFormatter = new JsonValueFormatter(null);
         readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
         long lastTimeStamp;
 
@@ -57,9 +57,11 @@ namespace Serilog.Sinks.Scalyr
             var attrs = new JObject();
             foreach (var property in logEvent.Properties)
             {
-                var json = new StringWriter();
-                formatter.Format(property.Value, json);
-                attrs.Add(property.Key, JToken.Parse(json.ToString()));
+                using (var json = new StringWriter())
+                {
+                    jsonValueFormatter.Format(property.Value, json);
+                    attrs.Add(property.Key, JToken.Parse(json.ToString()));
+                }
             }
             using (var stringWriter = new StringWriter())
             {
