@@ -1,7 +1,7 @@
-﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers.fs" />
@@ -17,8 +17,8 @@
   <ItemGroup>
     <PackageReference Include="Expecto" Version="*" />
     <PackageReference Include="FSharp.Core" Version="*" />
-    <PackageReference Include="FSharp.NET.Sdk" Version="*" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="*" />
     <PackageReference Include="Newtonsoft.Json" Version="*" />
     <PackageReference Include="Serilog" Version="*" />
   </ItemGroup>
