@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Expecto" Version="*" />
-    <PackageReference Include="FSharp.Core" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="*" />
     <PackageReference Include="Newtonsoft.Json" Version="*" />
