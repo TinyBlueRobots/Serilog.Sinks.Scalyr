@@ -1,3 +1,9 @@
+1.0.7
+* Small documentation improvements
+
+1.0.6
+* dotnet standard 2.0
+
 1.0.4
 * Support Output Templates
 
