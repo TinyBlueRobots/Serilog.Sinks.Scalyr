@@ -20,9 +20,9 @@ namespace Serilog
     /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
     /// <param name="period">The time to wait between checking for event batches.</param>
     /// <param name="queueLimit">Maximum number of events in the queue.</param>
-    /// <param name="sessionInfo">Additional information about the session.</param>
+    /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
     /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
-    /// <param name="outputTemplate">A message template describing the output messages.</param>
+    /// <param name="outputTemplate">A message template describing the output messages.See https://github.com/serilog/serilog/wiki/Formatting-Output.</param>
     public static LoggerConfiguration Scalyr(this LoggerSinkConfiguration loggerSinkConfiguration, string token, string serverHost, string logfile, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, object sessionInfo = null, Uri scalyrUri = null, string outputTemplate = null)
         {
             var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);

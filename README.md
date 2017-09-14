@@ -16,3 +16,17 @@ var log = new LoggerConfiguration()
 **serverHost** Hostname or some other stable server identifier. Scalyr uses this value to organize events from different servers.
 
 **logfile** The name of the log file being written to. This will probably be the name of your app.
+
+### Optional parameters
+
+**batchSizeLimit** The maximum number of events to include in a single batch.
+
+**period** The time to wait between checking for event batches.
+
+**queueLimit** Maximum number of events in the queue.
+
+**sessionInfo** Additional information about the session. See https://www.scalyr.com/help/api.
+
+**scalyrUri** The base URI for Scalyr. Defaults to https://scalyr.com.
+
+**outputTemplate** A message template describing the output messages. See https://github.com/serilog/serilog/wiki/Formatting-Output.
