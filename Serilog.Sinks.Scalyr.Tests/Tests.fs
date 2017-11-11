@@ -5,6 +5,7 @@ open Serilog
 open System
 open Newtonsoft.Json.Linq
 open System.Text.RegularExpressions
+open System.Net
 
 type SessionInfo = { location : string }
 
@@ -17,9 +18,7 @@ let tests =
 
   use testApi = new TestApi()
 
-  let uri = testApi.Start()
-
-  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token", "host", "app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = uri, sessionInfo = { location = "Earth" }).CreateLogger()
+  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token","app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = testApi.Scalyr.Uri, sessionInfo = { location = "Earth" }).CreateLogger()
 
   logger.Verbose("Verbose {foo}", "bar")
   logger.Debug "Debug"
@@ -40,13 +39,13 @@ let tests =
 
     testCase "session is a guid" <| fun _ -> Expect.isTrue (verboseLog |> getValue "session" |> isGuid) ""
 
-    testCase "serverHost is set" <| fun _ -> Expect.equal (sessionInfo |> getValue "serverHost") "host" ""
+    testCase "serverHost is set" <| fun _ -> Expect.equal (sessionInfo |> getValue "serverHost") (Dns.GetHostName()) ""
 
     testCase "logfile is set" <| fun _ -> Expect.equal (sessionInfo |> getValue "logfile") "app" ""
 
     testCase "location is set from sessioninfo object" <| fun _ -> Expect.equal (sessionInfo |> getValue "location") "Earth" ""
 
-    testCase "api received 6 logs" <| fun _ -> Expect.equal testApi.Received.Count 6 ""
+    testCase "api received 6 logs" <| fun _ -> Expect.equal testApi.Received.Length 6 ""
 
     testCase "events have incrementing ts" <| fun _ -> Expect.isTrue (testApi.Received |> Seq.map (getFirstEvent >> getValue "ts" >> int64) |> Seq.mapFold (fun state next -> next > state, next) startTs |> fst |> Seq.forall id) ""
 

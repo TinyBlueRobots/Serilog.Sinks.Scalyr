@@ -1,3 +1,6 @@
+2.0.0
+* Get serverHost from local machine
+
 1.0.7
 * Small documentation improvements
 

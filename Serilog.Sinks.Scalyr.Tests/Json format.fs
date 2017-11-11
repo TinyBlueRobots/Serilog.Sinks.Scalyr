@@ -1,4 +1,4 @@
-module FormatTests
+module JsonFormat
 
 open Expecto
 open Serilog
@@ -12,9 +12,7 @@ let tests =
 
   use testApi = new TestApi()
 
-  let uri = testApi.Start()
-
-  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token", "host", "app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = uri).CreateLogger()
+  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token", "app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = testApi.Scalyr.Uri).CreateLogger()
 
   logger.Information("{@foo}", { Foo = "Bar" })
 
@@ -24,4 +22,6 @@ let tests =
 
   let expected = JObject.Parse "{\"Foo\":\"Bar\"}"
 
-  testCase "foo is set" <| fun _ -> Expect.isTrue (JToken.DeepEquals(actual, expected)) (sprintf "%O : %O" actual expected)
+  test "foo is set" {
+    Expect.isTrue (JToken.DeepEquals(actual, expected)) (sprintf "%O : %O" actual expected)
+  }
