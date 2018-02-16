@@ -1,5 +1,6 @@
 ﻿using System;
 using Serilog.Configuration;
+using Serilog.Events;
 using Serilog.Formatting.Display;
 using Serilog.Sinks.Scalyr;
 
@@ -22,7 +23,18 @@ namespace Serilog
     /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
     /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
     /// <param name="outputTemplate">A message template describing the output messages.See https://github.com/serilog/serilog/wiki/Formatting-Output.</param>
-    public static LoggerConfiguration Scalyr(this LoggerSinkConfiguration loggerSinkConfiguration, string token, string logfile, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, object sessionInfo = null, Uri scalyrUri = null, string outputTemplate = null)
+    /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+    public static LoggerConfiguration Scalyr(
+      this LoggerSinkConfiguration loggerSinkConfiguration,
+      string token,
+      string logfile,
+      int? batchSizeLimit = null,
+      TimeSpan? period = null,
+      int? queueLimit = null,
+      object sessionInfo = null,
+      Uri scalyrUri = null,
+      string outputTemplate = null,
+      LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
     {
       var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
       var scalyrFormatter = new ScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter);
@@ -30,7 +42,7 @@ namespace Serilog
           queueLimit.HasValue ?
           new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value) :
           new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod);
-      return loggerSinkConfiguration.Sink(sink);
+      return loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel: restrictedToMinimumLevel);
     }
   }
 }

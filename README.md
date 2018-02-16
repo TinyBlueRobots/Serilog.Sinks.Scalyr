@@ -37,3 +37,5 @@ var log = new LoggerConfiguration()
 **scalyrUri** The base URI for Scalyr. Defaults to https://scalyr.com.
 
 **outputTemplate** A message template describing the output messages. See https://github.com/serilog/serilog/wiki/Formatting-Output.
+
+**restrictedToMinimumLevel** The minimum log event level required in order to write an event to the sink.
