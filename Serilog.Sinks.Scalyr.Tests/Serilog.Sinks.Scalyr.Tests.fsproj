@@ -15,7 +15,6 @@
   <ItemGroup>
     <PackageReference Include="Expecto" Version="*" />
     <PackageReference Include="Hornbill" Version="*" />
-    <PackageReference Include="Newtonsoft.Json" Version="*" />
     <PackageReference Include="Serilog" Version="*" />
   </ItemGroup>
 </Project>
