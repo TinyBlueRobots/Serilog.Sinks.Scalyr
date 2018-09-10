@@ -3,7 +3,7 @@
     <Description>Serilog sink that writes to Scalyr</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Tiny Blue Robots</Authors>
-    <TargetFrameworks>netstandard20;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Serilog.Sinks.Scalyr</AssemblyName>
     <PackageId>Serilog.Sinks.Scalyr</PackageId>

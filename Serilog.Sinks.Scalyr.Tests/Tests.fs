@@ -3,7 +3,6 @@ module Tests
 open Expecto
 open Serilog
 open System
-open Newtonsoft.Json.Linq
 open System.Text.RegularExpressions
 open System.Net
 

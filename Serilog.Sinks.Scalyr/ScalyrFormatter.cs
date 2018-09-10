@@ -62,6 +62,9 @@ namespace Serilog.Sinks.Scalyr
           attrs.Add(property.Key, JToken.Parse(json.ToString()));
         }
       }
+      if (logEvent.Exception != null) {
+        attrs.Add("Exception", JObject.FromObject(logEvent.Exception));
+      }
       using (var stringWriter = new StringWriter())
       {
         if (_messageTemplateTextFormatter != null)
