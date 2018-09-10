@@ -1,3 +1,12 @@
+2.0.3
+* Add `Exception` to message
+
+2.0.2
+* Lower versions of dependencies
+
+2.0.1
+* support restrictedToMinimumLevel
+
 2.0.0
 * Get serverHost from local machine
 
