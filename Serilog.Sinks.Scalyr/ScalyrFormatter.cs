@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Serilog.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using System.Threading;
 using Serilog.Formatting.Json;
 using System.IO;
 using Serilog.Formatting.Display;
@@ -62,7 +59,8 @@ namespace Serilog.Sinks.Scalyr
           attrs.Add(property.Key, JToken.Parse(json.ToString()));
         }
       }
-      if (logEvent.Exception != null) {
+      if (logEvent.Exception != null)
+      {
         attrs.Add("Exception", JObject.FromObject(logEvent.Exception));
       }
       using (var stringWriter = new StringWriter())

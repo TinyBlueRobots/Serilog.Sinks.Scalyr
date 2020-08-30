@@ -1,3 +1,6 @@
+3.0.0
+Drop NETFX support
+
 2.0.3
 * Add `Exception` to message
 
