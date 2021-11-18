@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
 namespace Serilog.Sinks.Scalyr
 {
@@ -8,6 +7,6 @@ namespace Serilog.Sinks.Scalyr
     public string Token { get; set; }
     public string Session { get; set; }
     public IEnumerable<ScalyrEvent> Events { get; set; }
-    public JObject SessionInfo { get; set; }
+    public object SessionInfo { get; set; }
   }
 }

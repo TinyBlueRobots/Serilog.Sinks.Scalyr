@@ -24,6 +24,7 @@ namespace Serilog
     /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
     /// <param name="outputTemplate">A message template describing the output messages.See https://github.com/serilog/serilog/wiki/Formatting-Output.</param>
     /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+    /// <param name="engine">The formatting engine to use when serializing the log events. Defaults to Newtonsoft.Json</param>
     public static LoggerConfiguration Scalyr(
       this LoggerSinkConfiguration loggerSinkConfiguration,
       string token,
@@ -34,15 +35,21 @@ namespace Serilog
       object sessionInfo = null,
       Uri scalyrUri = null,
       string outputTemplate = null,
-      LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+      LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+      Engine engine = Engine.Newtonsoft)
     {
       var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
-      var scalyrFormatter = new ScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter);
+      IScalyrFormatter scalyrFormatter = engine switch
+      {
+        Engine.SystemTextJson => new SystemTextJsonScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter),
+        _ => new NewtonsoftScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter),
+      };
       var sink =
-          queueLimit.HasValue ?
-          new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value) :
-          new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod);
+        queueLimit.HasValue ? 
+          new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value) 
+          : new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod);
       return loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel: restrictedToMinimumLevel);
     }
+
   }
 }

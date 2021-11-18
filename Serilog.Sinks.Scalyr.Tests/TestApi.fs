@@ -2,6 +2,7 @@
 module TestApi
 
 open System
+open System.Text.Json
 open Newtonsoft.Json.Linq
 open System.Threading
 open Hornbill
@@ -16,11 +17,14 @@ type TestApi() =
     Response.withStatusCode 200 |> scalyr.AddResponse "/" Method.GET
     scalyr.Start() |> ignore
 
-  member __.Continue = autoResetEvent
+  member _.Continue = autoResetEvent
 
-  member __.Scalyr = scalyr
+  member _.Scalyr = scalyr
 
-  member __.Received with get() = scalyr.Requests |> Seq.map (fun r -> JObject.Parse r.Body) |> Seq.toArray
+  member _.NewtonsoftReceived with get() = scalyr.Requests |> Seq.map (fun r -> JObject.Parse r.Body) |> Seq.toArray
+  member _.SystemTextJsonReceived with get() = scalyr.Requests |> Seq.map (fun r -> JsonDocument.Parse r.Body) |> Seq.toArray
+  
+  member _.Raw with get() = scalyr.Requests |> Seq.map (fun r -> r.Body) |> Seq.toArray
 
   interface IDisposable with
-    member __.Dispose() = scalyr.Dispose()
+    member _.Dispose() = scalyr.Dispose()
