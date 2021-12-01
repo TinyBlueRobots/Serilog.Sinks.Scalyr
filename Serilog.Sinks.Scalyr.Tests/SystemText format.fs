@@ -20,10 +20,10 @@ let tests =
                .WriteTo.Scalyr(
                 "token",
                 "app",
+                engine,
                 Nullable 1,
                 TimeSpan.FromMilliseconds 100. |> Nullable,
-                scalyrUri = testApi.Scalyr.Uri,
-                engine = engine
+                scalyrUri = testApi.Scalyr.Uri
             )
             .CreateLogger()
             
