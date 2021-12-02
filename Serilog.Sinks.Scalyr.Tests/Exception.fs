@@ -16,7 +16,7 @@ let tests =
 
   testApi.Continue.WaitOne(1000) |> ignore
 
-  let actual = testApi.NewtonsoftReceived.[0] |> getFirstJEvent |> getJAttrs |> getObject "Exception"
+  let actual = testApi.NewtonsoftReceived.[0] |> getFirstEvent |> getAttrs |> getObject "Exception"
 
   let expected = exn "BOOM" |> JObject.FromObject
 

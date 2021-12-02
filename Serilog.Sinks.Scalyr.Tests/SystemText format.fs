@@ -1,11 +1,38 @@
 module SystemTextFormat
 
+open System.IO
+open System.Text
+open System.Text.Encodings.Web
 open System.Text.Json
 open Expecto
 open Serilog
 open System
 open Newtonsoft.Json.Linq
 open Serilog.Sinks.Scalyr
+
+let getProperty (name: string) (element: JsonElement) : JsonElement = element.GetProperty(name)
+
+let getValue (name: string) (element: JsonElement) : string = element.GetProperty(name).GetString()
+
+let getFirstSTJEvent (element: JsonElement) : JsonElement =
+    element.GetProperty("events").EnumerateArray()
+    |> Seq.head
+
+let getSTJAttrs (element: JsonElement) : JsonElement = element.GetProperty("attrs")
+
+let indentedWriterOptions =
+    JsonWriterOptions(Indented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping)
+
+let serializeDocumentIndented (doc: JsonDocument) : string =
+    use stream = new MemoryStream()
+    using (new Utf8JsonWriter(stream, indentedWriterOptions)) doc.WriteTo
+    Encoding.UTF8.GetString(stream.ToArray())
+
+let serializeElementIndented (element: JsonElement) : string =
+    use stream = new MemoryStream()
+    using (new Utf8JsonWriter(stream, indentedWriterOptions)) element.WriteTo
+    Encoding.UTF8.GetString(stream.ToArray())
+
 
 type Test = { Foo: string }
 
@@ -40,12 +67,12 @@ let tests =
 
 
     let n_Received = testApi.NewtonsoftReceived.[0]
-    let n_foo = n_Received |> getFirstJEvent |> getJAttrs |> getObject "foo"
-    let n_ex = n_Received |> getFirstJEvent |> getJAttrs |> getObject "Exception"
+    let n_foo = n_Received |> getFirstEvent |> getAttrs |> getObject "foo"
+    let n_ex = n_Received |> getFirstEvent |> getAttrs |> getObject "Exception"
     
     let s_Received = testApi.SystemTextJsonReceived.[0]
-    let s_foo = s_Received.RootElement |> getFirstEvent |> getAttrs |> getProperty "foo"
-    let s_ex = s_Received.RootElement |> getFirstEvent |> getAttrs |> getProperty "Exception"
+    let s_foo = s_Received.RootElement |> getFirstSTJEvent |> getSTJAttrs |> getProperty "foo"
+    let s_ex = s_Received.RootElement |> getFirstSTJEvent |> getSTJAttrs |> getProperty "Exception"
 
     let raw = testApi.Raw.[0]
     

@@ -18,5 +18,5 @@ let tests =
   let verboseLog = testApi.NewtonsoftReceived.[0]
 
   test "message attr is set" {
-    Expect.equal (verboseLog |> getFirstJEvent |> getJAttrs |> getJValue "message") "Verbose HELLO" "message attr"
+    Expect.equal (verboseLog |> getFirstEvent |> getAttrs |> getValue "message") "Verbose HELLO" "message attr"
   }

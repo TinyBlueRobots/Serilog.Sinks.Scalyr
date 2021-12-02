@@ -18,7 +18,7 @@ let tests =
 
   testApi.Continue.WaitOne(1000) |> ignore
 
-  let actual = testApi.NewtonsoftReceived.[0] |> getFirstJEvent |> getJAttrs |> getObject "foo"
+  let actual = testApi.NewtonsoftReceived.[0] |> getFirstEvent |> getAttrs |> getObject "foo"
   
   let raw = testApi.Raw.[0]
 
