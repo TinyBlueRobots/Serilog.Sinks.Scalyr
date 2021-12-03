@@ -15,7 +15,7 @@ let tests =
 
   testApi.Continue.WaitOne(1000) |> ignore
 
-  let verboseLog = testApi.Received.[0]
+  let verboseLog = testApi.NewtonsoftReceived.[0]
 
   test "message attr is set" {
     Expect.equal (verboseLog |> getFirstEvent |> getAttrs |> getValue "message") "Verbose HELLO" "message attr"

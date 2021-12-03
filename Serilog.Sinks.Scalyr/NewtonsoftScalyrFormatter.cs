@@ -12,15 +12,15 @@ using System.Net;
 
 namespace Serilog.Sinks.Scalyr
 {
-  class ScalyrFormatter
+  internal class NewtonsoftScalyrFormatter : IScalyrFormatter
   {
-    readonly ScalyrSession _session;
-    readonly JsonSerializerSettings _jsonSerializerSettings;
-    readonly JsonValueFormatter jsonValueFormatter = new JsonValueFormatter(null);
-    readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
-    long lastTimeStamp;
+    private readonly ScalyrSession _session;
+    private readonly JsonSerializerSettings _jsonSerializerSettings;
+    private readonly JsonValueFormatter _jsonValueFormatter = new JsonValueFormatter(null);
+    private readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
+    private long _lastTimeStamp;
 
-    public ScalyrFormatter(string token, string logfile, object sessionInfo, MessageTemplateTextFormatter messageTemplateTextFormatter)
+    public NewtonsoftScalyrFormatter(string token, string logfile, object sessionInfo, MessageTemplateTextFormatter messageTemplateTextFormatter)
     {
       _jsonSerializerSettings = new JsonSerializerSettings
       {
@@ -31,9 +31,12 @@ namespace Serilog.Sinks.Scalyr
         }
       };
       _messageTemplateTextFormatter = messageTemplateTextFormatter;
-      _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N"), SessionInfo = JObject.FromObject(sessionInfo ?? new object()) };
-      _session.SessionInfo.Add("serverHost", getHostName());
-      _session.SessionInfo.Add("logfile", logfile);
+      _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N") };
+      JObject sessionObject = JObject.FromObject(sessionInfo ?? new object())
+                              ?? throw new InvalidOperationException("Could not serialize session info");
+      sessionObject.Add("serverHost", getHostName());
+      sessionObject.Add("logfile", logfile);
+      _session.SessionInfo = sessionObject;
     }
 
     string getHostName()
@@ -48,21 +51,23 @@ namespace Serilog.Sinks.Scalyr
       }
     }
 
-    ScalyrEvent MapToScalyrEvent(LogEvent logEvent, int index)
+    public ScalyrEvent MapToScalyrEvent(LogEvent logEvent, int index)
     {
       var attrs = new JObject();
       foreach (var property in logEvent.Properties)
       {
         using (var json = new StringWriter())
         {
-          jsonValueFormatter.Format(property.Value, json);
+          _jsonValueFormatter.Format(property.Value, json);
           attrs.Add(property.Key, JToken.Parse(json.ToString()));
         }
       }
+
       if (logEvent.Exception != null)
       {
         attrs.Add("Exception", JObject.FromObject(logEvent.Exception));
       }
+
       using (var stringWriter = new StringWriter())
       {
         if (_messageTemplateTextFormatter != null)
@@ -73,14 +78,15 @@ namespace Serilog.Sinks.Scalyr
         {
           stringWriter.Write(logEvent.RenderMessage());
         }
+
         attrs.Add("message", stringWriter.ToString());
       }
-      var ts = logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index;
-      while (ts <= lastTimeStamp) { ts++; }
-      lastTimeStamp = ts;
+
+      _lastTimeStamp = Math.Max(_lastTimeStamp + 1, logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index);
+
       return new ScalyrEvent
       {
-        Ts = ts.ToString(),
+        Ts = _lastTimeStamp.ToString(),
         Sev = ((int)logEvent.Level) + 1,
         Attrs = attrs
       };
