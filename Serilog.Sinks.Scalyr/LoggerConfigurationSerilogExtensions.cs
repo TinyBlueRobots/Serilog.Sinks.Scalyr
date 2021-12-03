@@ -74,18 +74,17 @@ namespace Serilog
       string outputTemplate = null,
       LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
     {
-      var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
+      var messageTemplateTextFormatter = string.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
       IScalyrFormatter scalyrFormatter = engine switch
       {
         Engine.SystemTextJson => new SystemTextJsonScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter),
         _ => new NewtonsoftScalyrFormatter(token, logfile, sessionInfo, messageTemplateTextFormatter),
       };
       var sink =
-        queueLimit.HasValue ? 
-          new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value) 
+        queueLimit.HasValue
+          ? new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod, queueLimit.Value)
           : new ScalyrSink(scalyrFormatter, scalyrUri, batchSizeLimit ?? ScalyrSink.DefaultBatchPostingLimit, period ?? ScalyrSink.DefaultPeriod);
       return loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel: restrictedToMinimumLevel);
     }
-
   }
 }

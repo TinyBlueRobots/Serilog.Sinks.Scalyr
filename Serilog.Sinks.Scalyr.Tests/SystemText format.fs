@@ -65,7 +65,6 @@ let tests =
     systemTextJsonLogger.Error(exn "BOOM", "{@foo}", { Foo = "Bar" })
     testApi.Continue.WaitOne(1000) |> ignore
 
-
     let n_Received = testApi.NewtonsoftReceived.[0]
     let n_foo = n_Received |> getFirstEvent |> getAttrs |> getObject "foo"
     let n_ex = n_Received |> getFirstEvent |> getAttrs |> getObject "Exception"
@@ -80,17 +79,16 @@ let tests =
     let n_expected_ex = exn "BOOM" |> JObject.FromObject
     let s_expected_foo = "{\"Foo\":\"Bar\"}" |> JsonDocument.Parse 
     let s_expected_ex = (exn "BOOM") |> JsonSerializer.SerializeToDocument
-    
 
     testList "Information" [
         
         testCase "foo output is identical" <| fun _ -> Expect.equal (s_foo |> serializeElementIndented) (n_foo |> string) $"{n_foo} : {s_foo} ({raw})"
+        
         testCase "exn output is identical" <| fun _ -> Expect.equal (s_ex |> serializeElementIndented) (n_ex |> string) $"{n_ex} : {s_ex} ({raw})"
         
         testCase "foo result is identical" <| fun _ -> Expect.equal (s_expected_foo |> serializeDocumentIndented) (n_expected_foo |> string) $"{n_expected_foo} : {s_expected_foo} ({raw})"
+        
         testCase "exn result is identical" <| fun _ -> Expect.equal (s_expected_ex |> serializeDocumentIndented) (n_expected_ex |> string) $"{n_expected_ex} : {s_expected_ex} ({raw})"
         
-        
         testCase "received is identical" <| fun _ -> Expect.equal (s_Received |> serializeDocumentIndented ) (n_Received |> string) $"{n_Received} : {s_Received} ({raw})" 
-                                                                 
     ]

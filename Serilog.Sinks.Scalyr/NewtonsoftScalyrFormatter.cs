@@ -62,10 +62,12 @@ namespace Serilog.Sinks.Scalyr
           attrs.Add(property.Key, JToken.Parse(json.ToString()));
         }
       }
+
       if (logEvent.Exception != null)
       {
         attrs.Add("Exception", JObject.FromObject(logEvent.Exception));
       }
+
       using (var stringWriter = new StringWriter())
       {
         if (_messageTemplateTextFormatter != null)
@@ -76,6 +78,7 @@ namespace Serilog.Sinks.Scalyr
         {
           stringWriter.Write(logEvent.RenderMessage());
         }
+
         attrs.Add("message", stringWriter.ToString());
       }
       var ts = logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index;
