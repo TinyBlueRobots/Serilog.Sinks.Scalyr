@@ -7,7 +7,7 @@ using System.Net.Http;
 
 namespace Serilog.Sinks.Scalyr
 {
-  class ScalyrSink : PeriodicBatchingSink
+  internal class ScalyrSink : PeriodicBatchingSink
   {
     readonly IScalyrFormatter _scalyrFormatter;
     readonly Uri _scalyrUri = new Uri("https://www.scalyr.com");

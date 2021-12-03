@@ -12,7 +12,7 @@ using System.Net;
 
 namespace Serilog.Sinks.Scalyr
 {
-  class NewtonsoftScalyrFormatter : IScalyrFormatter
+  internal class NewtonsoftScalyrFormatter : IScalyrFormatter
   {
     private readonly ScalyrSession _session;
     private readonly JsonSerializerSettings _jsonSerializerSettings;
