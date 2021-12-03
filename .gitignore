@@ -1,7 +1,6 @@
-packages
 .idea
 bin
 obj
-*.userprefs
 .vscode
 *.nupkg
+.ionide

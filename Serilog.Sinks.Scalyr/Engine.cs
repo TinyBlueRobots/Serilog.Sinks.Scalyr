@@ -1,18 +1,17 @@
-namespace Serilog.Sinks.Scalyr
+namespace Serilog.Sinks.Scalyr;
+
+/// <summary>
+///     Type of serialization method to use when writing log events to Scalyr.
+/// </summary>
+public enum Engine
 {
   /// <summary>
-  /// Type of serialization method to use when writing log events to Scalyr.
+  ///     Use Newtonsoft.Json to serialize log events.
   /// </summary>
-  public enum Engine
-  {
-    /// <summary>
-    /// Use Newtonsoft.Json to serialize log events.
-    /// </summary>
-    Newtonsoft,
+  Newtonsoft,
 
-    /// <summary>
-    /// Use System.Text.Json to serialize log events.
-    /// </summary>
-    SystemTextJson
-  }
+  /// <summary>
+  ///     Use System.Text.Json to serialize log events.
+  /// </summary>
+  SystemTextJson
 }
