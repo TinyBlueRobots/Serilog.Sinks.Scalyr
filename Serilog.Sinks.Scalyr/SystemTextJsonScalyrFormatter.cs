@@ -69,16 +69,11 @@ namespace Serilog.Sinks.Scalyr
         attrs.Add("message", stringWriter.ToString());
       }
 
-      long ts = logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index;
-      while (ts <= _lastTimeStamp)
-      {
-        ts++;
-      }
+      _lastTimeStamp = Math.Max(_lastTimeStamp + 1, logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index);
 
-      _lastTimeStamp = ts;
       return new ScalyrEvent
       {
-        Ts = ts.ToString(),
+        Ts = _lastTimeStamp.ToString(),
         Sev = (int)logEvent.Level + 1,
         Attrs = attrs
       };
