@@ -32,7 +32,8 @@ namespace Serilog.Sinks.Scalyr
       };
       _messageTemplateTextFormatter = messageTemplateTextFormatter;
       _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N") };
-      var sessionObject = JObject.FromObject(sessionInfo ?? new object()) ;
+      JObject sessionObject = JObject.FromObject(sessionInfo ?? new object())
+                              ?? throw new InvalidOperationException("Could not serialize session info");
       sessionObject.Add("serverHost", getHostName());
       sessionObject.Add("logfile", logfile);
       _session.SessionInfo = sessionObject;
