@@ -18,10 +18,12 @@ let tests =
 
   testApi.Continue.WaitOne(1000) |> ignore
 
-  let actual = testApi.Received.[0] |> getFirstEvent |> getAttrs |> getObject "foo"
+  let actual = testApi.NewtonsoftReceived.[0] |> getFirstEvent |> getAttrs |> getObject "foo"
+  
+  let raw = testApi.Raw.[0]
 
   let expected = JObject.Parse "{\"Foo\":\"Bar\"}"
 
   test "foo is set" {
-    Expect.isTrue (JToken.DeepEquals(actual, expected)) (sprintf "%O : %O" actual expected)
+    Expect.isTrue (JToken.DeepEquals(actual, expected)) $"{actual} : {expected} ({raw})"
   }

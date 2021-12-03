@@ -1,11 +1,9 @@
-using Newtonsoft.Json.Linq;
-
 namespace Serilog.Sinks.Scalyr
 {
-  class ScalyrEvent
+  internal class ScalyrEvent
   {
     public string Ts { get; set; }
     public int Sev { get; set; }
-    public JObject Attrs { get; set; }
+    public object Attrs { get; set; }
   }
 }
