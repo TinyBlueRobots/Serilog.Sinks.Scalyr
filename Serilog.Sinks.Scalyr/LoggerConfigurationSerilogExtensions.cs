@@ -11,23 +11,23 @@ namespace Serilog;
 /// </summary>
 public static class LoggerConfigurationSerilogExtensions
 {
-  /// <summary>
-  ///     Adds a sink that writes log events to <a href="https://scalyr.com">Scalyr</a>.
-  /// </summary>
-  /// <param name="loggerSinkConfiguration">The logger configuration.</param>
-  /// <param name="token">"Write Logs" API token. Find API tokens at https://www.scalyr.com/keys.</param>
-  /// <param name="logfile">The name of the log file being written to.</param>
-  /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
-  /// <param name="period">The time to wait between checking for event batches.</param>
-  /// <param name="queueLimit">Maximum number of events in the queue.</param>
-  /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
-  /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
-  /// <param name="outputTemplate">
-  ///     A message template describing the output messages.See
-  ///     https://github.com/serilog/serilog/wiki/Formatting-Output.
-  /// </param>
-  /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
-  public static LoggerConfiguration Scalyr(
+    /// <summary>
+    ///     Adds a sink that writes log events to <a href="https://scalyr.com">Scalyr</a>.
+    /// </summary>
+    /// <param name="loggerSinkConfiguration">The logger configuration.</param>
+    /// <param name="token">"Write Logs" API token. Find API tokens at https://www.scalyr.com/keys.</param>
+    /// <param name="logfile">The name of the log file being written to.</param>
+    /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
+    /// <param name="period">The time to wait between checking for event batches.</param>
+    /// <param name="queueLimit">Maximum number of events in the queue.</param>
+    /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
+    /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
+    /// <param name="outputTemplate">
+    ///     A message template describing the output messages.See
+    ///     https://github.com/serilog/serilog/wiki/Formatting-Output.
+    /// </param>
+    /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+    public static LoggerConfiguration Scalyr(
         this LoggerSinkConfiguration loggerSinkConfiguration,
         string token,
         string logfile,
@@ -52,24 +52,24 @@ public static class LoggerConfigurationSerilogExtensions
             restrictedToMinimumLevel);
     }
 
-  /// <summary>
-  ///     Adds a sink that writes log events to <a href="https://scalyr.com">Scalyr</a>.
-  /// </summary>
-  /// <param name="loggerSinkConfiguration">The logger configuration.</param>
-  /// <param name="token">"Write Logs" API token. Find API tokens at https://www.scalyr.com/keys.</param>
-  /// <param name="logfile">The name of the log file being written to.</param>
-  /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
-  /// <param name="period">The time to wait between checking for event batches.</param>
-  /// <param name="queueLimit">Maximum number of events in the queue.</param>
-  /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
-  /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
-  /// <param name="outputTemplate">
-  ///     A message template describing the output messages.See
-  ///     https://github.com/serilog/serilog/wiki/Formatting-Output.
-  /// </param>
-  /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
-  /// <param name="engine">The formatting engine to use when serializing the log events. Defaults to Newtonsoft.Json</param>
-  public static LoggerConfiguration Scalyr(
+    /// <summary>
+    ///     Adds a sink that writes log events to <a href="https://scalyr.com">Scalyr</a>.
+    /// </summary>
+    /// <param name="loggerSinkConfiguration">The logger configuration.</param>
+    /// <param name="token">"Write Logs" API token. Find API tokens at https://www.scalyr.com/keys.</param>
+    /// <param name="logfile">The name of the log file being written to.</param>
+    /// <param name="batchSizeLimit">The maximum number of events to include in a single batch.</param>
+    /// <param name="period">The time to wait between checking for event batches.</param>
+    /// <param name="queueLimit">Maximum number of events in the queue.</param>
+    /// <param name="sessionInfo">Additional information about the session. See https://www.scalyr.com/help/api.</param>
+    /// <param name="scalyrUri">The base URI for Scalyr. Defaults to https://scalyr.com.</param>
+    /// <param name="outputTemplate">
+    ///     A message template describing the output messages.See
+    ///     https://github.com/serilog/serilog/wiki/Formatting-Output.
+    /// </param>
+    /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+    /// <param name="engine">The formatting engine to use when serializing the log events. Defaults to Newtonsoft.Json</param>
+    public static LoggerConfiguration Scalyr(
         this LoggerSinkConfiguration loggerSinkConfiguration,
         string token,
         string logfile,
