@@ -9,7 +9,7 @@ Writes [Serilog](https://serilog.net) events to [Scalyr](https://www.scalyr.com/
 Install the [Serilog.Sinks.Scalyr](https://www.nuget.org/packages/Serilog.Sinks.Scalyr) package from NuGet:
 
 ```powershell
-Install-Package Serilog.Sinks.SyslogServer
+Install-Package Serilog.Sinks.Scalyr
 ```
 
 To configure the sink in C# code, call `WriteTo.Scalyr()` during logger configuration:
