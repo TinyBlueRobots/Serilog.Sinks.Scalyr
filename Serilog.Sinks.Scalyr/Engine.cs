@@ -5,13 +5,13 @@ namespace Serilog.Sinks.Scalyr;
 /// </summary>
 public enum Engine
 {
-  /// <summary>
-  ///     Use Newtonsoft.Json to serialize log events.
-  /// </summary>
-  Newtonsoft,
+    /// <summary>
+    ///     Use Newtonsoft.Json to serialize log events.
+    /// </summary>
+    Newtonsoft,
 
-  /// <summary>
-  ///     Use System.Text.Json to serialize log events.
-  /// </summary>
-  SystemTextJson
+    /// <summary>
+    ///     Use System.Text.Json to serialize log events.
+    /// </summary>
+    SystemTextJson
 }

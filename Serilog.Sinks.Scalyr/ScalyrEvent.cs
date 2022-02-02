@@ -1,9 +1,8 @@
-namespace Serilog.Sinks.Scalyr
+namespace Serilog.Sinks.Scalyr;
+
+class ScalyrEvent
 {
-  internal class ScalyrEvent
-  {
     public string Ts { get; set; }
     public int Sev { get; set; }
     public object Attrs { get; set; }
-  }
 }

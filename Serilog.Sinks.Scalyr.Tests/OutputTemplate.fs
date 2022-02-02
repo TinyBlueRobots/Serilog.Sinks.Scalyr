@@ -9,7 +9,19 @@ let tests =
 
   use testApi = new TestApi()
 
-  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token", "app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = testApi.Scalyr.Uri, outputTemplate = "{Level} {Message}").CreateLogger()
+  let logger =
+    LoggerConfiguration()
+      .MinimumLevel.Verbose()
+      .WriteTo
+      .Scalyr(
+        "token",
+        "app",
+        Nullable 1,
+        TimeSpan.FromMilliseconds 100. |> Nullable,
+        scalyrUri = testApi.Scalyr.Uri,
+        outputTemplate = "{Level} {Message}"
+      )
+      .CreateLogger()
 
   logger.Verbose("HELLO")
 
@@ -18,5 +30,11 @@ let tests =
   let verboseLog = testApi.NewtonsoftReceived.[0]
 
   test "message attr is set" {
-    Expect.equal (verboseLog |> getFirstEvent |> getAttrs |> getValue "message") "Verbose HELLO" "message attr"
+    Expect.equal
+      (verboseLog
+       |> getFirstEvent
+       |> getAttrs
+       |> getValue "message")
+      "Verbose HELLO"
+      "message attr"
   }

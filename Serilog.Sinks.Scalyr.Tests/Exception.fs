@@ -8,18 +8,31 @@ open Newtonsoft.Json.Linq
 [<Tests>]
 let tests =
 
-  use testApi = new TestApi()
+    use testApi = new TestApi()
 
-  let logger = LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Scalyr("token", "app", Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, scalyrUri = testApi.Scalyr.Uri).CreateLogger()
+    let logger =
+        LoggerConfiguration()
+            .MinimumLevel.Verbose()
+            .WriteTo
+            .Scalyr(
+                "token",
+                "app",
+                Nullable 1,
+                TimeSpan.FromMilliseconds 100. |> Nullable,
+                scalyrUri = testApi.Scalyr.Uri
+            )
+            .CreateLogger()
 
-  logger.Error(exn "BOOM", "Error")
+    logger.Error(exn "BOOM", "Error")
 
-  testApi.Continue.WaitOne(1000) |> ignore
+    testApi.Continue.WaitOne(1000) |> ignore
 
-  let actual = testApi.NewtonsoftReceived.[0] |> getFirstEvent |> getAttrs |> getObject "Exception"
+    let actual =
+        testApi.NewtonsoftReceived.[0]
+        |> getFirstEvent
+        |> getAttrs
+        |> getObject "Exception"
 
-  let expected = exn "BOOM" |> JObject.FromObject
+    let expected = exn "BOOM" |> JObject.FromObject
 
-  test "Exception is set" {
-    Expect.isTrue (JToken.DeepEquals(actual, expected)) $"{actual} : {expected}"
-  }
+    test "Exception is set" { Expect.isTrue (JToken.DeepEquals(actual, expected)) $"{actual} : {expected}" }

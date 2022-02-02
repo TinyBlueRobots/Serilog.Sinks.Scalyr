@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Description>Serilog sink that writes to Scalyr</Description>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <Authors>Tiny Blue Robots</Authors>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Serilog.Sinks.Scalyr</AssemblyName>
-    <PackageId>Serilog.Sinks.Scalyr</PackageId>
-    <PackageTags>serilog;scalyr</PackageTags>
-    <PackageProjectUrl>https://github.com/TinyBlueRobots/Serilog.Sinks.Scalyr</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageIcon>logo.png</PackageIcon>
-    <RepositoryType>git</RepositoryType>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.1.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\LICENSE" Pack="true" PackagePath="" />
-    <None Include="..\logo.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+    <PropertyGroup>
+        <Description>Serilog sink that writes to Scalyr</Description>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <Authors>Tiny Blue Robots</Authors>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <AssemblyName>Serilog.Sinks.Scalyr</AssemblyName>
+        <PackageId>Serilog.Sinks.Scalyr</PackageId>
+        <PackageTags>serilog;scalyr</PackageTags>
+        <PackageProjectUrl>https://github.com/TinyBlueRobots/Serilog.Sinks.Scalyr</PackageProjectUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryType>git</RepositoryType>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="9.0.1"/>
+        <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.3.0"/>
+        <PackageReference Include="System.Text.Json" Version="6.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\LICENSE" Pack="true" PackagePath=""/>
+        <None Include="..\logo.png" Pack="true" PackagePath=""/>
+    </ItemGroup>
 </Project>
