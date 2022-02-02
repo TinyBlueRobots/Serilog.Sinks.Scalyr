@@ -26,7 +26,8 @@ namespace Serilog.Sinks.Scalyr
       _jsonSerializerSettings = new JsonSerializerOptions
       {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters = { new MethodBaseConverter() }
       };
       _messageTemplateTextFormatter = messageTemplateTextFormatter;
       _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N") };
