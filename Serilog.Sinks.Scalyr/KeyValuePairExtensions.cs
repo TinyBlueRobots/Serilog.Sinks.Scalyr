@@ -3,7 +3,7 @@
 namespace Serilog.Sinks.Scalyr;
 
 /// <summary>
-/// Extension methods for <see cref="KeyValuePair{TKey,TValue}"/>.
+///     Extension methods for <see cref="KeyValuePair{TKey,TValue}"/>.
 /// </summary>
 public static class KeyValuePairExtensions
 {
