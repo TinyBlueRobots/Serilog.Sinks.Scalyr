@@ -59,11 +59,11 @@ let tests =
 
   let systemTextJsonLogger = createLogger Engine.SystemTextJson
 
-  newtonsoftLogger.Error(exn "BOOM", "{@foo}", { Foo = "Bar" })
+  newtonsoftLogger.Error(exn "BOOM", "{@foo} {message}", { Foo = "Bar"  }, "Baz")
   testApi.Continue.WaitOne(1000) |> ignore
 
   testApi.Continue.Reset |> ignore
-  systemTextJsonLogger.Error(exn "BOOM", "{@foo}", { Foo = "Bar" })
+  systemTextJsonLogger.Error(exn "BOOM", "{@foo} {message}", { Foo = "Bar" }, "Baz")
   testApi.Continue.WaitOne(1000) |> ignore
 
   let n_Received = testApi.NewtonsoftReceived.[0]
@@ -73,6 +73,12 @@ let tests =
     |> getFirstEvent
     |> getAttrs
     |> getObject "foo"
+    
+  let n_message =
+    n_Received
+    |> getFirstEvent
+    |> getAttrs
+    |> getObject "message"
 
   let n_ex =
     n_Received
@@ -88,6 +94,12 @@ let tests =
     |> getSTJAttrs
     |> getProperty "foo"
 
+  let s_message =
+    s_Received.RootElement
+    |> getFirstSTJEvent
+    |> getSTJAttrs
+    |> getProperty "message"
+    
   let s_ex =
     s_Received.RootElement
     |> getFirstSTJEvent
@@ -111,7 +123,13 @@ let tests =
 
       testCase "foo output is identical"
       <| fun _ -> Expect.equal (s_foo |> serializeElementIndented) (n_foo |> string) $"{n_foo} : {s_foo} ({raw})"
-
+      
+      testCase "newtonsoft message property is overwritten"
+      <| fun _ -> Expect.notEqual (n_message |> string)"Baz" $"{n_message} ({raw})"
+      
+      testCase "STJ message property is overwritten"
+      <| fun _ -> Expect.notEqual (s_message |> serializeElementIndented) "Baz" $"{s_message} ({raw})"
+      
       testCase "exn output is identical"
       <| fun _ -> Expect.equal (s_ex |> serializeElementIndented) (n_ex |> string) $"{n_ex} : {s_ex} ({raw})"
 
