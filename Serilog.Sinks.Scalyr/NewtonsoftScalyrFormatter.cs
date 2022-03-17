@@ -35,8 +35,8 @@ class NewtonsoftScalyrFormatter : IScalyrFormatter
         _session = new ScalyrSession { Token = token, Session = Guid.NewGuid().ToString("N") };
         var sessionObject = JObject.FromObject(sessionInfo ?? new object())
                             ?? throw new InvalidOperationException("Could not serialize session info");
-        sessionObject.Add("serverHost", getHostName());
-        sessionObject.Add("logfile", logfile);
+        sessionObject["serverHost"] = getHostName();
+        sessionObject["logfile"] = logfile;
         _session.SessionInfo = sessionObject;
     }
 
@@ -47,10 +47,10 @@ class NewtonsoftScalyrFormatter : IScalyrFormatter
             using (var json = new StringWriter())
             {
                 _jsonValueFormatter.Format(property.Value, json);
-                attrs.Add(property.Key, JToken.Parse(json.ToString()));
+                attrs[property.Key] = JToken.Parse(json.ToString());
             }
 
-        if (logEvent.Exception != null) attrs.Add("Exception", JObject.FromObject(logEvent.Exception));
+        if (logEvent.Exception != null) attrs["Exception"] = JObject.FromObject(logEvent.Exception);
 
         using (var stringWriter = new StringWriter())
         {
@@ -59,7 +59,7 @@ class NewtonsoftScalyrFormatter : IScalyrFormatter
             else
                 stringWriter.Write(logEvent.RenderMessage());
 
-            attrs.Add("message", stringWriter.ToString());
+            attrs["message"] = stringWriter.ToString();
         }
 
         _lastTimeStamp = Math.Max(_lastTimeStamp + 1, logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index);
