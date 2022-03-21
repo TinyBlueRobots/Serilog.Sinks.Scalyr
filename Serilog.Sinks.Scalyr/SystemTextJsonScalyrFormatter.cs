@@ -12,13 +12,13 @@ using Serilog.Formatting.Json;
 
 namespace Serilog.Sinks.Scalyr;
 
-class SystemTextJsonScalyrFormatter : IScalyrFormatter
+internal class SystemTextJsonScalyrFormatter : IScalyrFormatter
 {
-    readonly JsonSerializerOptions _jsonSerializerSettings;
-    readonly JsonValueFormatter _jsonValueFormatter = new(null);
-    readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
-    readonly ScalyrSession _session;
-    long _lastTimeStamp;
+    private readonly JsonSerializerOptions _jsonSerializerSettings;
+    private readonly JsonValueFormatter _jsonValueFormatter = new JsonValueFormatter(null);
+    private readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
+    private readonly ScalyrSession _session;
+    private long _lastTimeStamp;
 
 
     public SystemTextJsonScalyrFormatter(string token, string logfile, object sessionInfo,
@@ -43,15 +43,15 @@ class SystemTextJsonScalyrFormatter : IScalyrFormatter
     public ScalyrEvent MapToScalyrEvent(LogEvent logEvent, int index) // var attrs_ = new JsonObject();
     {
         var attrs = new JsonObject();
-        foreach (var property in logEvent.Properties)
-            using (var json = new StringWriter())
-            {
-                _jsonValueFormatter.Format(property.Value, json);
-                attrs.Add(property.Key, JsonNode.Parse(json.ToString()));
-            }
+        foreach ((string key, LogEventPropertyValue value) in logEvent.Properties)
+        {
+            using var json = new StringWriter();
+            _jsonValueFormatter.Format(value, json);
+            attrs[key] = JsonNode.Parse(json.ToString());
+        }
 
         if (logEvent.Exception != null)
-            attrs.Add("Exception", JsonSerializer.Serialize(logEvent.Exception, _jsonSerializerSettings));
+            attrs["Exception"] = JsonSerializer.Serialize(logEvent.Exception, _jsonSerializerSettings);
 
         using (var stringWriter = new StringWriter())
         {
@@ -60,7 +60,7 @@ class SystemTextJsonScalyrFormatter : IScalyrFormatter
             else
                 stringWriter.Write(logEvent.RenderMessage());
 
-            attrs.Add("message", stringWriter.ToString());
+            attrs["message"] = stringWriter.ToString();
         }
 
         _lastTimeStamp = Math.Max(_lastTimeStamp + 1, logEvent.Timestamp.ToUnixTimeMilliseconds() * 1000000 + index);
@@ -76,11 +76,11 @@ class SystemTextJsonScalyrFormatter : IScalyrFormatter
     public string Format(IEnumerable<LogEvent> events)
     {
         _session.Events = events.Select(MapToScalyrEvent);
-        var json = JsonSerializer.Serialize(_session, _jsonSerializerSettings);
+        string json = JsonSerializer.Serialize(_session, _jsonSerializerSettings);
         return json;
     }
 
-    static string GetHostName()
+    private static string GetHostName()
     {
         try
         {
